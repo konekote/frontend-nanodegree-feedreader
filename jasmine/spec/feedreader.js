@@ -8,23 +8,23 @@
  * since some of these tests may require DOM elements. We want
  * to ensure they don't run until the DOM is ready.
  */
-$(function() {
+$(function () {
 
-    describe('RSS Feeds', function() {
+    describe('RSS Feeds', function () {
 
-        it('are defined', function() {
+        it('are defined', function () {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
 
-         it('has a URL', function() {
-             allFeeds.forEach(element => {
-                 expect(element.url).toBeDefined();
-                 expect(element.url.length).not.toBe(0);
-             });
-         });
+        it('has a URL', function () {
+            allFeeds.forEach(element => {
+                expect(element.url).toBeDefined();
+                expect(element.url.length).not.toBe(0);
+            });
+        });
 
-        it('has a name', function() {
+        it('has a name', function () {
             allFeeds.forEach(element => {
                 expect(element.name).toBeDefined();
                 expect(element.name.length).not.toBe(0);
@@ -32,57 +32,52 @@ $(function() {
         });
     });
 
+    describe('menu', function () {
 
-    describe('menu', function() {
-
-         it('hides the menu', function() {
-             expect($('body').hasClass('menu-hidden')).toBe(true);
-         });
+        it('hides the menu', function () {
+            expect($('body').hasClass('menu-hidden')).toBe(true);
+        });
 
 
-          it('toggles the menu', function() {
+        it('toggles the menu', function () {
             $('.menu-icon-link').click();
             expect($('body').hasClass('menu-hidden')).toBe(false);
             $('.menu-icon-link').click();
             expect($('body').hasClass('menu-hidden')).toBe(true);
-          });
-
         });
-
-    describe('initial entries', function() {
-
-        beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });
-        });
-
-
-        it('should have an entry element', function() {
-            expect(document.getElementsByClassName('entry')).not.toBeUndefined();
-        });
-
-
     });
 
-    describe('New Feed Selection', function() {
+    describe('initial entries', function () {
 
-        beforeEach(function(done) {
-            loadFeed(0, function() {
+        beforeEach(function (done) {
+            loadFeed(0, function () {
                 done();
             });
         });
 
-        it('should load new feed', function(done) {
-           
+
+        it('should have an entry element', function () {
+            expect(document.getElementsByClassName('entry')).not.toBeUndefined();
+        });
+    });
+
+    describe('New Feed Selection', function () {
+
+        beforeEach(function (done) {
+            loadFeed(0, function () {
+                done();
+            });
+        });
+
+        /* For this test, it is enough to check if the first element has changed. */
+        it('should load new feed', function (done) {
+
             let firstPreviousNode = $('.feed').children().toArray()[0];
-            loadFeed(1, function() {
+            loadFeed(1, function () {
                 let firstCurrentNode = $('.feed').children().toArray()[0];
                 expect(firstPreviousNode.href !== firstCurrentNode.href).toBe(true);
                 done();
             });
         });
-
     });
-
 }());
