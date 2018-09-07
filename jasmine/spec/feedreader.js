@@ -12,11 +12,13 @@ $(function () {
 
     describe('RSS Feeds', function () {
 
+        // Checks if there is at least 1 feed and it is defined.
         it('are defined', function () {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
 
+        // Checks if each feed has a URL defined that is not empty.
         it('has a URL', function () {
             allFeeds.forEach(element => {
                 expect(element.url).toBeDefined();
@@ -24,6 +26,7 @@ $(function () {
             });
         });
 
+        // Checks if each feed has a name defined that is not empty.
         it('has a name', function () {
             allFeeds.forEach(element => {
                 expect(element.name).toBeDefined();
@@ -34,11 +37,12 @@ $(function () {
 
     describe('menu', function () {
 
+        // Checks if menu is hidden by default.
         it('hides the menu', function () {
             expect($('body').hasClass('menu-hidden')).toBe(true);
         });
 
-
+        // Checks if menu changes visibility when the icon is clicked.
         it('toggles the menu', function () {
             $('.menu-icon-link').click();
             expect($('body').hasClass('menu-hidden')).toBe(false);
@@ -56,28 +60,31 @@ $(function () {
         });
 
 
+        // Checks if there is at least one .entry element in the .feed container.
         it('should have an entry element', function () {
-            expect(document.getElementsByClassName('entry')).not.toBeUndefined();
+            expect($('.feed .entry').length).toBeGreaterThan(0);
         });
     });
 
     describe('New Feed Selection', function () {
 
+        let firstFeed, 
+            secondFeed;
+
+        // Loads 2 different feeds and saves the HTML of each in a variable.
         beforeEach(function (done) {
             loadFeed(0, function () {
-                done();
+                firstFeed = $('.feed')[0].innerHTML;
+                loadFeed(1, function () {
+                    secondFeed = $('.feed')[0].innerHTML;
+                    done();
+                });
             });
         });
 
-        /* For this test, it is enough to check if the first element has changed. */
-        it('should load new feed', function (done) {
-
-            let firstPreviousNode = $('.feed').children().toArray()[0];
-            loadFeed(1, function () {
-                let firstCurrentNode = $('.feed').children().toArray()[0];
-                expect(firstPreviousNode.href !== firstCurrentNode.href).toBe(true);
-                done();
-            });
+        // Checks if the HTML of each variable is different.
+        it('should load new feed', function () {
+            expect(firstFeed !== secondFeed).toBe(true);
         });
     });
 }());
